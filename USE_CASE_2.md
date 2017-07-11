@@ -19,7 +19,7 @@ This HTTP GET request omits the `fields` query parameter. the API returns the fu
 
 **Request**
 
-`GET /v1/customers/123456`
+`GET /api/v1/customers/123456`
 
 **Response**
 
@@ -29,28 +29,16 @@ This HTTP GET request omits the `fields` query parameter. the API returns the fu
   
 *Response Body*
   
-`
+```
 {
   "id": 123456,
   "firstName": "David",
   "lastName": "J",
-  "addresses": [
-  {
-    "type": "home",
-    "value": "David's home address"
-  },
-  {
-    "type": "shipping",
-    "value": "David's shipping address"
-  },
-  {
-    "type": "billing",
-    "value": "David's billing address"
-  }
-  ],
+  "shippingAddress": "David's shipping address"
+  "billingAddress": "David's billing address"
   "isDeleted": false
 }
-`
+```
 
 ### 2) Optimized GET Request using Query Parameter - Receive Partial Resource
 
@@ -58,7 +46,7 @@ This HTTP GET request adds the `fields` query parameter. The API returns the par
 
 **Request**
 
-`GET /v1/customers/123456?fields=firstName,lastName`
+`GET /api/v1/customers/123456?fields=firstName,lastName`
 
 **Response**
 
@@ -68,7 +56,12 @@ This HTTP GET request adds the `fields` query parameter. The API returns the par
   
 *Response Body*
   
-` { "firstName": "David", "lastName": "J" }`
+```
+{
+  "firstName": "Jon",
+  "lastName": "Doe"
+}
+```
 
 ### 3) Update Partial Object with PATCH Request
 
@@ -76,11 +69,16 @@ You can also avoid sending unnecessary data when modifying resources. To send up
 
 **Request**
 
-`PATCH /v1/123456`
+`PATCH /api/v1/123456`
 
 *Request Body*
 
-` { "firstName": "John", "lastName": "Doe" }`
+```
+{
+  "firstName": "Jon",
+  "lastName": "Doe"
+}
+```
 
 **Response**
 
@@ -90,40 +88,32 @@ You can also avoid sending unnecessary data when modifying resources. To send up
   
 *Response Body*
   
-`
+```
 {
   "id": 123456,
-  "firstName": "John",
+  "firstName": "Jon",
   "lastName": "Doe",
-  "addresses": [
-  {
-    "type": "home",
-    "value": "David's home address"
-  },
-  {
-    "type": "shipping",
-    "value": "David's shipping address"
-  },
-  {
-    "type": "billing",
-    "value": "David's billing address"
-  }
-  ],
+  "shippingAddress": "Jon's hipping address"
+  "billingAddress": "Jon's billing address"
   "isDeleted": false
 }
-`
-
+```
 ### 4) Update Partial Object with PATCH Request and Receive null Response by using fields Query Parameter
 
-The example below shows how in addition to using PATCH, you could use `fields` query parameter to recieve null response thus further reducing the netwrok traffic.
+The example below shows how in addition to using PATCH, you could use `fields` query parameter to recieve null response thus further reducing the netwrok traffic. In the below example, we are passing fields=null. If you need, you may pass the field names to get those back in the response.
 
 **Request**
 
-`PATCH /v1/123456?fields=null`
+`PATCH /api/v1/123456?fields=null`
 
 *Request Body*
 
-` { "firstName": "John", "lastName": "Doe" }`
+```
+{
+  "firstName": "Jon",
+  "lastName": "Doe"
+}
+```
 
 **Response**
 
