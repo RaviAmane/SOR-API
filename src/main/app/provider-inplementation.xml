@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+    <validation:config name="Validation_Configuration" doc:name="Validation Configuration"/>
+    <flow name="getCustomers">
+        <db:select config-ref="Derby_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[SELECT *
+FROM CUSTOMERS
+WHERE IS_DELETED = false]]></db:parameterized-query>
+        </db:select>
+        <dw:transform-message doc:name="Transform Message" metadata:id="6ff2d43b-84a1-4c6e-8a5e-26260d1d0a23">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map ((payload01 , indexOfPayload01) -> {
+	id: payload01.ID,
+	firstName: payload01.FIRST_NAME,
+	lastName: payload01.LAST_NAME,
+	billingAddress: payload01.BILLING_ADDRESS,
+	shippingAddress: payload01.SHIPPING_ADDRESS,
+	isDeleted: payload01.IS_DELETED
+})]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="createNewCustomer" doc:description="This flow should ideally return a link to newly created resource. However the DerbyClient driver I am using is not capable to return the (auto-generated) ID of newly inserted row. Hence that functionaliy is not implemented.">
+        <json:json-to-object-transformer doc:name="JSON to Object"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="1454f121-af55-43d5-9995-88179a932bc7">
+            <dw:input-payload mimeType="application/json"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <db:insert config-ref="Derby_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[INSERT INTO CUSTOMERS
+(FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS, IS_DELETED, LAST_UPDATED)
+VALUES
+(#[payload.firstName], #[payload.lastName], #[payload.billingAddress], #[payload.shippingAddress], false, #[server.dateTime.format("yyyy-MM-dd HH:mm:ss.SSS")])]]></db:parameterized-query>
+
+        </db:insert>
+        <set-property propertyName="Location" value="/customers/#[payload]" doc:name="Property"/>
+
+    </flow>
+    <flow name="getCustomer">
+        <db:select config-ref="Derby_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[SELECT *
+FROM CUSTOMERS
+WHERE
+ID = #[flowVars.customerId] AND IS_DELETED = false]]></db:parameterized-query>
+
+        </db:select>
+        <flow-ref name="customerRecordFound" doc:name="customerRecordFound"/>
+        <dw:transform-message doc:name="Transform Message" metadata:id="5506cd41-fddf-4db5-835c-36498d30730f">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+payload map ((payload01 , indexOfPayload01) -> {
+	id: payload01.ID,
+	firstName: payload01.FIRST_NAME,
+	lastName: payload01.LAST_NAME,
+	billingAddress: payload01.BILLING_ADDRESS,
+	shippingAddress: payload01.SHIPPING_ADDRESS,
+	isDeleted: payload01.IS_DELETED
+})]]></dw:set-payload>
+        </dw:transform-message>
+
+    </flow>
+    <flow name="fullyUpdateCustomer">
+        <json:json-to-object-transformer doc:name="JSON to Object"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+        <db:update config-ref="Derby_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[UPDATE CUSTOMERS
+SET
+FIRST_NAME = #[payload.firstName],
+LAST_NAME = #[payload.lastName],
+BILLING_ADDRESS = #[payload.billingAddress],
+SHIPPING_ADDRESS = #[payload.shippingAddress],
+IS_DELETED = false,
+LAST_UPDATED = #[server.dateTime.format("yyyy-MM-dd HH:mm:ss.SSS")]
+WHERE
+ID = #[flowVars.customerId] AND IS_DELETED = false]]></db:parameterized-query>
+        </db:update>
+        <flow-ref name="customerRecordChanged" doc:name="customerRecordChanged"/>
+    </flow>
+    <flow name="partiallyUpdateCustomer">
+        <json:json-to-object-transformer doc:name="JSON to Object"/>
+        <dw:transform-message doc:name="Transform Message">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    <flow name="deleteCustomer">
+        <db:update config-ref="Derby_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[UPDATE CUSTOMERS
+SET
+IS_DELETED = true,
+LAST_UPDATED = #[server.dateTime.format("yyyy-MM-dd HH:mm:ss.SSS")]
+WHERE
+ID = #[flowVars.customerId]]]></db:parameterized-query>
+        </db:update>
+        <flow-ref name="customerRecordChanged" doc:name="customerRecordChanged"/>
+    </flow>
+    <sub-flow name="customerRecordFound">
+        <validation:is-not-empty value="#[payload]" doc:name="Validation"/>
+    </sub-flow>
+    <sub-flow name="customerRecordChanged">
+        <validation:matches-regex value="#[payload]" regex="^[1-9][0-9]*$" doc:name="Validation"/>
+    </sub-flow>
+</mule>

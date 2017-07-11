@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Customer",
+  "description": "A customer from system of records.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique identifier.",
+      "type": "integer"
+    },
+    "firstName": {
+      "description": "First name of the customer.",
+      "type": "string",
+      "minLength": 3
+    },
+    "lastName": {
+      "description": "Last name of the customer.",
+      "type": "string"
+    },
+    "billingAddress": {
+      "description": "Billing address of the customer.",
+      "type": "string"
+    },
+    "shippingAddress": {
+      "description": "Shipping address of the customer.",
+      "type": "string"
+    },
+    "isDeleted": {
+      "description": "A flag to indicate if this customer record is deleted.",
+      "type": "boolean"
+    }
+  }
+}

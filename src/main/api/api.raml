@@ -1,0 +1,31 @@
+#%RAML 1.0
+title: System of Records (SOR) API
+#baseUri: https://example.org/{version}
+baseUri: https://mocksvc.mulesoft.com/mocks/4bd12304-163e-423d-b8db-8931dc213fc5/{version}
+version: v1
+
+types:
+  customer: !include schemas/customer.schema
+  #order: future extension of the API to support orders; include order schema here.
+  #product: future extension of the API to support products; include product schema here.
+
+resourceTypes:
+  collection: !include resourceTypes/collection.raml
+  collectionItem: !include resourceTypes/collectionItem.raml
+
+traits:
+  pageable: !include traits/pageable.raml
+
+/customers:
+  type:
+    collection:
+      exampleCollection: !include examples/customers.sample
+      exampleItem: !include examples/customer.sample
+  get:
+    is: [pageable]
+  /{customerId}:
+    type:
+      collectionItem:
+        exampleItem: !include examples/customer.sample
+        examplePartialItem: !include examples/partial-customer.sample
+          

@@ -1,0 +1,99 @@
+#%RAML 1.0 ResourceType
+description: Entity representing a <<resourcePathName | !singularize>>
+get:
+  description: |
+    Get the partial or full details of <<resourcePathName|!singularize>> with <<resourcePathName|!singularize>>Id = {<<resourcePathName|!singularize>>Id}.
+  queryParameters: 
+    fields:
+      description: Pass the comma seperated list of fields that need to be returned.
+      required: false
+  responses: 
+    200:
+      body: 
+        application/json:
+          example: | 
+            <<exampleItem>>
+    400:
+      body: 
+        application/json:
+          example: { "message" : "Bad Request â€“ The request could not be understood or performed by the server due to malformed syntax and requires modifications before it can be performed." }
+    404:
+      body:
+        application/json:
+          example: |
+            { "message" : "<<resourcePathName | !singularize>> not found." }
+    500:
+      body: 
+        application/json:
+          example: { "message" : "The server was unable to complete your request at this time; please try after some time." }
+patch:
+  description: |
+    Partial update the <<resourcePathName|!singularize>> with <<resourcePathName|!singularize>>Id = {<<resourcePathName|!singularize>>Id}
+  queryParameters: 
+    fields:
+      description: Pass the comma seperated list of fields that need to be returned.
+      required: false
+  body:
+    application/json:
+      example: |
+        <<examplePartialItem>>
+  responses: 
+    200:
+      body: 
+        application/json:
+          example: | 
+            <<examplePartialItem>>
+    204:
+    400:
+      body: 
+        application/json:
+          example: { "message" : "Bad Request â€“ The request could not be understood or performed by the server due to malformed syntax and requires modifications before it can be performed." }
+    404:
+      body:
+        application/json:
+          example: |
+            { "message" : "<<resourcePathName | !singularize>> not found." }
+    500:
+      body: 
+        application/json:
+          example: { "message" : "The server was unable to complete your request at this time; please try after some time." }
+put:
+  description: |
+    Update the <<resourcePathName|!singularize>> with <<resourcePathName|!singularize>>Id = {<<resourcePathName|!singularize>>Id}
+  body:
+    application/json:
+      example: |
+        <<exampleItem>>
+  responses: 
+    200:
+      body: 
+        application/json:
+          example: | 
+            <<exampleItem>>
+    400:
+      body: 
+        application/json:
+          example: { "message" : "Bad Request â€“ The request could not be understood or performed by the server due to malformed syntax and requires modifications before it can be performed." }
+    404:
+      body:
+        application/json:
+          example: |
+            { "message" : "<<resourcePathName | !singularize>> not found." }
+    500:
+      body: 
+        application/json:
+          example: { "message" : "The server was unable to complete your request at this time; please try after some time." }
+delete:
+  description: |
+    Delete the <<resourcePathName|!singularize>> with <<resourcePathName|!singularize>>Id = {<<resourcePathName|!singularize>>Id}
+  responses: 
+    204:
+    404:
+      body:
+        application/json:
+          example: |
+            { "message" : "<<resourcePathName | !singularize>> not found." }
+    500:
+      body: 
+        application/json:
+          example: { "message" : "The server was unable to complete your request at this time; please try after some time." }

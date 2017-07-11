@@ -1,0 +1,18 @@
+[
+  {
+    "id" : 1,
+    "firstName": "David",
+    "lastName" : "J",
+    "billingAddress" : "David's Billing address",
+    "shippingAddress" : "David's Shipping address",
+    "isDeleted" : false
+  },
+  {
+    "id" : 2,
+    "firstName": "Fibha",
+    "lastName" : "M",
+    "billingAddress" : "Fibha's Billing address",
+    "shippingAddress" : "Fibha's Shipping address",
+    "isDeleted" : false
+  }
+]

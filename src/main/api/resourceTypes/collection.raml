@@ -1,0 +1,44 @@
+#%RAML 1.0 ResourceType
+description: Collection of <<resourcePathName>>
+get:
+  description: Get list of <<resourcePathName>>
+  headers:
+    If-Modified-Since:
+      description: Get the <<resourcePathName>> that are updated since this datetime in the format 2017-07-18T14:30:37.090Z. To get the list of all <<resourcePathName>> (caution advised!), enter the epoch time - 1970-01-01T00:00:00.090Z.
+      type: datetime
+      required: true
+  responses: 
+    200:
+      body:
+        application/json:
+          example: |
+            <<exampleCollection>>
+    304:
+    500:
+      body: 
+        application/json:
+          example: { "message" : "The server was unable to complete your request at this time; please try after some time." }
+post:
+  body: 
+    application/json:
+      type: <<resourcePathName | !singularize>>
+      example: | 
+        <<exampleItem>>
+  description: Add a new <<resourcePathName | !singularize>>
+  responses: 
+    201:
+      headers: 
+        Location:
+          example: <<resourcePathName | !singularize>>/123
+      body: 
+        application/json:
+          example: { "message" : "<<resourcePathName | !singularize>> created successfully." }
+    400:
+      body: 
+        application/json:
+          example: { "message" : "Bad Request - the request could not be understood or performed by the server due to malformed syntax; and requires modifications before it can be performed." }
+    500:
+      body: 
+        application/json:
+          example: { "message" : "The server was unable to complete your request at this time; please try after some time." }
+
