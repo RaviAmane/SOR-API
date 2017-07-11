@@ -1,5 +1,5 @@
 ﻿# System Of Records (SOR) API
-> Best Practices for RESTful API Design using RAML
+> Best Practices for RESTful API Design using RAML. Sample implementation using Mulesoft Anypoint Studio.
 
 This is an example API design using RAML. The implementation of this API using Mulesoft Studio is coming soon. In its current state, the project demonstrates the following:
 
@@ -7,8 +7,7 @@ This is an example API design using RAML. The implementation of this API using M
 - Use of built in aspects of the HTTP protocol (status codes, headers, etc.).
 - Use of various RAML features.
 - Performance considerations when designing the API for mobile applicationsl; that is feficient use of the network.
-- Important Note: In its current state, this projects includes the API design using RAML.
-- Coming Soon: I am working on implementing this RESTful API in Mulesoft with test stubs for the consumer and provider systems. The implementation will be added to this project soon.
+- Sample implementation of the API using Mulesoft Anypoint Studio.
 
 This API, in its present state, contains a single resource `/customers`. The operations allowed on the `/customers` resource are listed below.  For more details see [API Documentation](API_DOCUMENTATION.md).
 
@@ -28,6 +27,7 @@ This API, in its present state, contains a single resource `/customers`. The ope
 
 You can use this project in various ways:
 
+- Import this project into Mulesoft Anypoint Studio. This project used Apache Derby standalone database. In order to run this project, you will need to [Setup Apache Derby](DERBY_SETUP.md).
 - Use the api.raml (and the subdirectories/files) in your API design. This project makes use of RAML features making it easy to extend it to support future resources such as products and orders. For more details see [Use Case 3: Extention of this API to Support Future Resources](USE_CASE_3.md).
 - Create your own Mulefost project by importing api.raml using APIkit.
 - Create an API in API Designer (a part of Mulesoft Anypoint Platform) and import it into your Mulesoft project using APIkit.
