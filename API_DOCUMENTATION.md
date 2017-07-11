@@ -58,36 +58,16 @@
             "id": 1,
             "firstName": "David",
             "lastName": "J",
-            "addresses": [
-              {
-                 "type": "home",
-                 "value": "David's home address"
-              },
-              {
-                "type": "shipping",
-                "value": "David's shipping address"
-              },
-              {
-                "type": "billing",
-                "value": "David's billing address"
-              }
-            ],
+            "shippingAddress": "David's shipping address",
+            "billingAddress": "David's billing address",
             "isDeleted": false
           },
           {
             "id": 2,
             "firstName": "Fibha",
             "lastName": "M",
-            "addresses": [
-            {
-              "type": "shipping",
-              "value": "Fibha's shipping address"
-            },
-            {
-              "type": "billing",
-             "value": "David's billing address"
-            }
-            ],
+            "shippingAddress": "Fibha's shipping address",
+            "billingAddress": "Fibha's billing address",
             "isDeleted": false
           }
         ]
