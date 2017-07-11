@@ -13,8 +13,10 @@ The sample implimentation of this project makes use of Apache Derby as a stand a
   - On ij command prompt, run `connect 'jdbc:derby://localhost:1527/C:\Users\admin\temp\db;create=true';`. Here `C:\Users\admin\temp\db` is a path on my local machine, you should replace it as appropriate to your environment.
   - The above command will create a database instance.
   - Create tablse schema and sample records by running following at command line.
-  ` CREATE TABLE CUSTOMERS (
-    ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  
+```
+ CREATE TABLE CUSTOMERS (
+    ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),`
     FIRST_NAME VARCHAR(255),
     LAST_NAME VARCHAR(255),
     BILLING_ADDRESS VARCHAR(255),
@@ -27,7 +29,8 @@ INSERT INTO CUSTOMERS (FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS,
 INSERT INTO CUSTOMERS (FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS, IS_DELETED, LAST_UPDATED) VALUES ('Fibha', 'M', 'Billing Address', 'Shipping Address', false, CURRENT_TIMESTAMP);
 INSERT INTO CUSTOMERS (FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS, IS_DELETED, LAST_UPDATED) VALUES ('Marlon', 'V', 'Billing Address', 'Shipping Address', false, CURRENT_TIMESTAMP);
 INSERT INTO CUSTOMERS (FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS, IS_DELETED, LAST_UPDATED) VALUES ('John', 'Doe', 'Billing Address', 'Shipping Address', false, CURRENT_TIMESTAMP);
-INSERT INTO CUSTOMERS (FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS, IS_DELETED, LAST_UPDATED) VALUES ('Jane', 'Doe', 'Billing Address', 'Shipping Address', false, CURRENT_TIMESTAMP); `
+INSERT INTO CUSTOMERS (FIRST_NAME, LAST_NAME, BILLING_ADDRESS, SHIPPING_ADDRESS, IS_DELETED, LAST_UPDATED) VALUES ('Jane', 'Doe', 'Billing Address', 'Shipping Address', false, CURRENT_TIMESTAMP);
+```
 
   - With above you have setup Derby database that the project uses. In order for the Mule application to connect to this database, a client driver is needed.
 
