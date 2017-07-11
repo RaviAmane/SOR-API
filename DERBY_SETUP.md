@@ -9,11 +9,11 @@ The sample implimentation of this project makes use of Apache Derby as a stand a
 
 ##### Creating Sample Database
 
-  - In `DERBY_HOME/bin` directory run `./ij'. ij is an interactive SQL scripting tool that comes with Derby.
+  - In `DERBY_HOME/bin` directory run `./ij`. ij is an interactive SQL scripting tool that comes with Derby.
   - On ij command prompt, run `connect 'jdbc:derby://localhost:1527/C:\Users\admin\temp\db;create=true';`. Here `C:\Users\admin\temp\db` is a path on my local machine, you should replace it as appropriate to your environment.
   - The above command will create a database instance.
   - Create tablse schema and sample records by running following at command line.
-  ' CREATE TABLE CUSTOMERS (
+  ` CREATE TABLE CUSTOMERS (
     ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     FIRST_NAME VARCHAR(255),
     LAST_NAME VARCHAR(255),
