@@ -10,7 +10,7 @@ As an API designer, it may be tempting to provide a **friendly URL** like `HTTP 
 For a detailed discussion calling `HTTP GET` on `/customers`, please see [Use Case 1: Maintain a Copy of Customers Data](USE_CASE_1.md).
 
 #### 2) A Case for using `billingAddress` and `shippingAddress` instead of `addresses` in customer object
-For customer object, instead of array of "addresses", I would have prefered to use specific address fields, e.g. `billingAddress` and `shippingAddress`.
+For customer object, instead of array of "addresses", I have used specific address fields, e.g. `billingAddress` and `shippingAddress`.
 
 *Pros:*
 
