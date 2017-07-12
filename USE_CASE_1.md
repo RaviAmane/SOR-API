@@ -10,5 +10,5 @@ A consumer may periodically (every 5 minutes) consume the API to enable it (the 
 - For details on `HTTP GET` on `/customers`, please refer to the [API Documentation](API_DOCUMENTATION.md).
 
 **Important Notes:**
-  - ***Granularity of timestamp:*** The API maintains the timestamp at ***3 digit micro seconds***. The client must maintain the same level of granularity. A different granularity may result into missing the existing records or receiving the duplicate records.
+  - ***Granularity of timestamp:*** The API maintains the timestamp at ***3 digit micro seconds***. The client must maintain the same level of granularity. A different granularity may result into missing the existing records or receiving the duplicate records (across two consecutive API calls).
   - ***isDeleted field:*** The API returns the deleted customer records with `isDeleted = 1`.
