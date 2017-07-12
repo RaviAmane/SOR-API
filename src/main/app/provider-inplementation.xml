@@ -17,6 +17,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 FROM CUSTOMERS
 WHERE IS_DELETED = false]]></db:parameterized-query>
         </db:select>
+        <logger message="Returned #[payload.size()] customer records." level="INFO" doc:name="Log Records Count"/>
         <dw:transform-message doc:name="Transform Message" metadata:id="6ff2d43b-84a1-4c6e-8a5e-26260d1d0a23">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -48,6 +49,8 @@ VALUES
 
         </db:insert>
         <set-property propertyName="Location" value="/customers/#[payload]" doc:name="Property"/>
+        <flow-ref name="clearPayload" doc:name="Clear Payload"/>
+        <logger message="New customer record created." level="INFO" doc:name="Log Info"/>
 
     </flow>
     <flow name="getCustomer">
@@ -58,7 +61,7 @@ WHERE
 ID = #[flowVars.customerId] AND IS_DELETED = false]]></db:parameterized-query>
 
         </db:select>
-        <flow-ref name="customerRecordFound" doc:name="customerRecordFound"/>
+        <flow-ref name="customerRecordFound" doc:name="Record Found?"/>
         <dw:transform-message doc:name="Transform Message" metadata:id="5506cd41-fddf-4db5-835c-36498d30730f">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -94,7 +97,9 @@ LAST_UPDATED = #[server.dateTime.format("yyyy-MM-dd HH:mm:ss.SSS")]
 WHERE
 ID = #[flowVars.customerId] AND IS_DELETED = false]]></db:parameterized-query>
         </db:update>
-        <flow-ref name="customerRecordChanged" doc:name="customerRecordChanged"/>
+        <flow-ref name="customerRecordChanged" doc:name="Record Updated?"/>
+        <flow-ref name="clearPayload" doc:name="Clear Payload"/>
+        <logger message="Updated customer (customerId = #[flowVars.customerId])." level="INFO" doc:name="Log Info"/>
     </flow>
     <flow name="partiallyUpdateCustomer">
         <json:json-to-object-transformer doc:name="JSON to Object"/>
@@ -114,12 +119,16 @@ LAST_UPDATED = #[server.dateTime.format("yyyy-MM-dd HH:mm:ss.SSS")]
 WHERE
 ID = #[flowVars.customerId]]]></db:parameterized-query>
         </db:update>
-        <flow-ref name="customerRecordChanged" doc:name="customerRecordChanged"/>
+        <flow-ref name="customerRecordChanged" doc:name="Record Deleted?"/>
+        <logger message="Deleted customer (customerId = #[flowVars.customerId])" level="INFO" doc:name="Log Info"/>
     </flow>
     <sub-flow name="customerRecordFound">
         <validation:is-not-empty value="#[payload]" doc:name="Validation"/>
     </sub-flow>
     <sub-flow name="customerRecordChanged">
         <validation:matches-regex value="#[payload]" regex="^[1-9][0-9]*$" doc:name="Validation"/>
+    </sub-flow>
+    <sub-flow name="clearPayload">
+        <set-payload value="#[null]" doc:name="Cleare the Payload"/>
     </sub-flow>
 </mule>
